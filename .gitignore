@@ -1,0 +1,23 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Claude Code local settings (project skills under .claude/skills are committed on purpose)
+.claude/settings.local.json
+
+# Spec Kit machine-local extension catalog cache (feature.json is ignored by .specify/.gitignore)
+.specify/extensions/.cache/
+
+# Node
+node_modules/
+dist/
+.next/
+coverage/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json

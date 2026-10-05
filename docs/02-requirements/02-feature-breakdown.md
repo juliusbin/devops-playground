@@ -1,12 +1,12 @@
 # Feature Breakdown and Specify Prompts
 
-Spec Kit works one feature at a time: `/speckit-specify` creates `specs/NNN-feature-name/spec.md`, then `/speckit-plan` and `/speckit-tasks` follow. This document is the backlog of features in recommended order, each with the requirement IDs it covers, its dependencies, and a paste-ready `specify` prompt written in "what and why" language.
+Spec Kit works one feature at a time: `/speckit-specify` creates `specs/NNN-feature-name/spec.md` and records that directory in the machine-local `.specify/feature.json`, which `/speckit-plan` and `/speckit-tasks` then read. `NNN` is assigned sequentially after the highest existing directory, so specify features in the order below, or pin the directory as described in `05-spec-kit-handoff/01-handoff-guide.md`, section 3.2. The core command does not create a git branch; the same section explains the options. This document is the backlog of features in recommended order, each with the requirement IDs it covers, its dependencies, and a paste-ready `specify` prompt written in "what and why" language.
 
 Rule of thumb from Spec Kit: the `specify` prompt describes users and outcomes, not technology. Technology goes into the `plan` prompt (see `05-spec-kit-handoff/01-handoff-guide.md`).
 
 ## Delivery order and rationale
 
-Build a **walking skeleton** first (001 → 003 → 004) so the propose-then-apply core exists before any agent intelligence is layered on. Then add the agent (005), objectives (006), the weekly loop (007), check-ins (008), evidence (009), dashboard (010), notifications (011), and coach chat (012). Everything after that is post-v1.
+Build a **walking skeleton** first (001 → 003 → 004) so the propose-then-apply core exists before any agent intelligence is layered on. Then 002 (profile and self-assessment), which 005 depends on; then the agent (005), objectives (006), the weekly loop (007), check-ins (008), evidence (009), dashboard (010), notifications (011), and coach chat (012). Everything after that is post-v1.
 
 ```mermaid
 flowchart LR
@@ -55,7 +55,7 @@ flowchart LR
 
 ## Specify prompts
 
-Each block below is the natural-language input to `/speckit-specify`. Replace nothing; add detail if you have it. Items marked `[NEEDS CLARIFICATION]` are expected to be resolved by `/speckit-clarify`.
+Each block below is the natural-language input to `/speckit-specify`. Replace nothing; add detail if you have it. Items marked `[NEEDS CLARIFICATION]` are resolved either by `/speckit-specify` itself (it keeps at most three markers and may ask about them in the same run) or by `/speckit-clarify` (up to five questions per run); the answers are in `05-spec-kit-handoff/02-open-questions.md`.
 
 ### 001 Secure access and settings
 

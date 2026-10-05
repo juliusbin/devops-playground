@@ -1,6 +1,6 @@
 # Career OS – Architecture and System Design
 
-**Status:** Architecture recommendation, pre-implementation. Nothing in this folder is code; it is the input for a Spec Driven Development (SDD) workflow using [GitHub Spec Kit](https://github.com/github/spec-kit).
+**Status:** Architecture recommendation, pre-implementation. Nothing in this folder is code; it is the input for a Spec Driven Development (SDD) workflow using [GitHub Spec Kit](https://github.com/github/spec-kit). Spec Kit 1.1.1.dev0 is initialised in this repository for Claude Code: skills under `.claude/skills/speckit-*/`, scaffold under `.specify/`. The installed state and the exact commands are in [the handoff guide](05-spec-kit-handoff/01-handoff-guide.md).
 
 **Working title:** Career OS. Rename freely; the name appears only in these docs.
 
@@ -20,7 +20,7 @@ The agent does **not** reach into external tools (GitHub, Jira, calendar) and do
 | Folder | Purpose | Feeds which Spec Kit step |
 |---|---|---|
 | `00-discovery/` | Vision, scope, decisions taken, glossary, user journeys | Context for every step |
-| `01-constitution/` | Project principles, ready to paste | `/speckit-constitution` |
+| `01-constitution/` | Project principles; the readable source mirrored in `.specify/memory/constitution.md`, which is installed and filled (v1.0.0) | `/speckit-plan` (Constitution Check), `/speckit-analyze`; amendments via `/speckit-constitution` |
 | `02-requirements/` | Product requirements (what and why) and the feature breakdown with one `specify` prompt per feature | `/speckit-specify`, `/speckit-clarify` |
 | `03-architecture/` | System architecture, agent architecture, data model, API contracts, competency model, security, deployment, quality | `/speckit-plan` (technical context) |
 | `04-decisions/` | Architecture Decision Records (ADRs) | Constraints for `/speckit-plan` and `/speckit-analyze` |
@@ -61,7 +61,7 @@ Suggested reading order for a first pass: `00-discovery/01-vision-and-scope.md` 
 
 ## Conventions used in these documents
 
-- Requirement IDs: `FR-xxx` functional, `NFR-xxx` non-functional, `US-xxx` user story. Features are numbered `001-…` to match Spec Kit's `specs/NNN-feature-name/` folders.
+- Requirement IDs: `FR-xxx` functional, `NFR-xxx` non-functional, `US-xxx` user story. Features are numbered `001-…` to match Spec Kit's `specs/NNN-feature-name/` folders. Spec Kit assigns `NNN` sequentially after the highest existing folder, so the numbers line up only when features are specified in the listed order or the directory is pinned (handoff guide, section 3.2).
 - `[NEEDS CLARIFICATION]` marks an open question, in the same style Spec Kit uses. All of them are collected in `05-spec-kit-handoff/02-open-questions.md`.
 - Diagrams are Mermaid and render on GitHub.
 - "v1" means the first usable release (features marked P0 and P1 in the feature breakdown). "Later" means explicitly out of v1 scope.

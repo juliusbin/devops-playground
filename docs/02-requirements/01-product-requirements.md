@@ -181,7 +181,7 @@ Acceptance criteria use Given/When/Then.
 | NFR-009 | Accessibility | Keyboard navigable; WCAG 2.1 AA colour contrast. |
 | NFR-010 | Operability | One `docker compose up`; health endpoints; structured logs; documented runbook. |
 | NFR-011 | Maintainability | Typed end to end; contracts generated, not hand-written; ADRs current. |
-| NFR-012 | Agent quality | Scenario evaluation suite with a pass threshold agreed in `08-quality-and-testing.md`; regressions block release. |
+| NFR-012 | Agent quality | Scenario evaluation suite with a pass threshold agreed in `03-architecture/08-quality-and-testing.md`; regressions block release. |
 | NFR-013 | Agent safety | The agent cannot mutate plan state outside proposals; tool inputs are schema-validated; per-session iteration and token caps. |
 | NFR-014 | Resumability | Agent sessions and jobs survive a worker restart without duplicate side effects. |
 

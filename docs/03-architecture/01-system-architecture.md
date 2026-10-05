@@ -84,6 +84,8 @@ career-os/
     config/              Typed environment loading, shared eslint/tsconfig
   docs/                  These documents
   specs/                 Spec Kit features (created by Spec Kit)
+  .claude/skills/        Spec Kit skills for Claude Code (managed by the CLI)
+  .specify/              Spec Kit scaffold: constitution, templates, scripts, workflows
   infra/
     compose/             docker-compose.yml, Caddyfile, backup scripts
     k8s/                 Later: Helm chart

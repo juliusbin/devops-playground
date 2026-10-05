@@ -1,6 +1,6 @@
 # Career OS Constitution
 
-**Purpose of this file:** paste-ready input for `/speckit-constitution`. Spec Kit will write the result to `.specify/memory/constitution.md` and use it as a gate in every plan. Keep principles few, testable, and phrased so an automated review can check compliance.
+**Purpose of this file:** the readable source of the project constitution. Spec Kit 1.1.1.dev0 is initialised in this repository; `.specify/memory/constitution.md` is installed and holds this constitution (version 1.0.0, ratified 2026-10-05) in Spec Kit's MUST/SHOULD phrasing with ADR references. Spec Kit reads that file as a gate in every plan (`/speckit-plan` Constitution Check) and in `/speckit-analyze`. Amendments go through `/speckit-constitution` and are mirrored here (handoff guide, section 2). Keep principles few, testable, and phrased so an automated review can check compliance.
 
 **Version:** 1.0.0 · **Ratified:** 2026-10-05 · **Last amended:** 2026-10-05
 
@@ -12,7 +12,7 @@ All user data lives in the self-hosted PostgreSQL database and local attachment 
 *Compliance check:* no outbound network call except to the configured LLM API endpoint and, if enabled, the user's own SMTP or push server. Verified by an integration test that runs the app against a deny-all egress policy with only the LLM host allowed.
 
 ### II. The agent proposes, the user decides
-Any change to roadmap, milestones, activities, objectives, key results, weekly plans, or evidence that originates from the agent MUST be expressed as a proposal with per-operation rationale and MUST be applied only after the user's explicit approval. Append-only records (reflections, check-in transcripts, agent notes, usage) may be written directly. The optional "auto-apply low-risk operations" setting is the only exception and is off by default.
+Any change to roadmap, milestones, activities, objectives, key results, weekly plans, or evidence that originates from the agent MUST be expressed as a proposal with per-operation rationale and MUST be applied only after the user's explicit approval. Append-only records (reflections, check-in transcripts, agent notes, usage) may be written directly. The optional "auto-apply low-risk operations" setting is the only exception: it is off by default, covers only the two operation types ADR-0005 names (plan item status and key result progress, when the user stated the fact in the same conversation), and auto-approves a proposal rather than bypassing the proposal path.
 
 *Compliance check:* domain services that mutate plan state accept an `actor` argument; when `actor` is `agent`, the only permitted path is `applyApprovedProposal`. Enforced by a unit test over the service layer.
 
@@ -32,9 +32,9 @@ Zod schemas in `packages/contracts` are the single source of truth for API reque
 *Compliance check:* CI fails if the generated OpenAPI document differs from the committed one, or if `drizzle-kit check` reports schema drift.
 
 ### VI. Tests prove behaviour; the database is real
-Domain logic has unit tests. Anything touching PostgreSQL is tested against a real PostgreSQL started by Testcontainers, never a mock or SQLite. Agent behaviour is tested two ways: deterministic unit tests on recorded fixtures (no network), and a scenario-based evaluation suite with rubric grading that runs on a schedule, not on every pull request. Red-green ordering is expected: write the failing test first for domain and API work.
+Domain logic has unit tests. Anything touching PostgreSQL is tested against a real PostgreSQL started by Testcontainers, never a mock or SQLite. Agent behaviour is tested two ways: deterministic unit tests on recorded fixtures (no network), and a scenario-based evaluation suite with rubric grading that runs on a schedule, not on every pull request. Red-green ordering is required for domain and API work: write the failing test first, then implement.
 
-*Compliance check:* CI runs unit and integration suites on every pull request; coverage thresholds are set per package in the repo and must not decrease.
+*Compliance check:* CI runs unit and integration suites on every pull request; coverage thresholds are set per package in the repo and must not decrease (the threshold value may only go up).
 
 ### VII. Observable and cost-bounded
 Logs are structured JSON with a correlation ID per request and per agent session. LLM spend is aggregated daily and compared with the monthly budget; when the budget is reached, background agent jobs pause and the user is notified. Interactive sessions warn before exceeding a per-session cap.
@@ -42,19 +42,19 @@ Logs are structured JSON with a correlation ID per request and per agent session
 *Compliance check:* a test that a budget breach pauses the weekly plan job and creates a notification.
 
 ### VIII. Decisions are written down before they are built
-Architecture-significant choices are recorded as ADRs in `docs/04-decisions/` before implementation. Every feature follows the Spec Kit flow: specification, clarification, plan, tasks, implementation. A plan that contradicts an ADR must either be changed or supersede the ADR explicitly.
+Architecture-significant choices are recorded as ADRs in `docs/04-decisions/` before implementation. Architecture-significant means at least: a new runtime component, datastore, language, or external service; a change to the agent harness, the authentication model, or the data model of a core entity. Every feature follows the Spec Kit flow: specification, clarification, plan, tasks, implementation. A plan that contradicts an ADR must either be changed or supersede the ADR explicitly.
 
 *Compliance check:* `/speckit-analyze` is run before `/speckit-implement` for every feature; the plan's "Constitution check" section lists the ADRs it relies on.
 
 ### IX. Portable and recoverable
-The whole system starts from `docker compose up` with a single `.env`. Backups are automated, encrypted at rest when stored off-host, and restore is tested at least once per release. Data can be exported in open formats (JSON and the original attachments) without the application running.
+The whole system starts from `docker compose up` with a single `.env`. Backups run automatically at least daily, are retained for at least 30 days, are encrypted at rest when stored off-host, and restore is tested at least once per release. Data can be exported in open formats (JSON and the original attachments) without the application running.
 
 *Compliance check:* a release checklist item "restore last backup into a clean stack and log in" must be ticked.
 
 ## Additional constraints
 
 - **Language and runtime:** TypeScript (strict) on the current Node.js LTS everywhere: UI, API, worker, agent runtime, scripts. No second backend language without an ADR.
-- **Accessibility and devices:** The UI must be usable on a phone browser and with keyboard only. Check-ins in particular are often done on a phone.
+- **Accessibility and devices:** The UI must be usable on a phone browser and with keyboard only. Check-ins in particular are often done on a phone. Compliance check: the Playwright journeys for the daily check-in, status update, and evidence capture run at a phone viewport and with keyboard only, and colour contrast meets WCAG 2.1 AA (NFR-008, NFR-009).
 - **LLM policy:** Model, effort, and budget are configuration, not code. Prompts and tool definitions are versioned in the repository. See ADR-0006.
 - **Secrets:** Never in the repository, never in images; injected at runtime through environment or Docker secrets.
 
@@ -68,4 +68,4 @@ The whole system starts from `docker compose up` with a single `.env`. Backups a
 
 ## Governance
 
-This constitution supersedes ad hoc practice. Amendments require: a pull request that edits this file, a bumped version (MAJOR for removed or redefined principles, MINOR for added principles or sections, PATCH for wording), and a note in `docs/04-decisions/README.md`. Reviews check pull requests against the compliance checks above; unexplained violations block merge.
+This constitution supersedes ad hoc practice. Amendments require: a pull request that edits this file, a bumped version (MAJOR for removed or redefined principles or governance rules, MINOR for added principles or sections or materially expanded guidance, PATCH for clarifications, wording, and typo fixes), and a note in `docs/04-decisions/README.md`. Reviews check pull requests against the compliance checks above; unexplained violations block merge.
